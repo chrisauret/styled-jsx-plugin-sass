@@ -20,15 +20,17 @@ module.exports = (css, settings) => {
       (_, id) => `/*%%styled-jsx-placeholder-${id}%%*/`
     )
 
-  // Prepend option data to cssWithPlaceholders
   const optionData = (settings.sassOptions && settings.sassOptions.data) || ''
-  // clean up extra indent (indentedSyntax is not compatible with extra indenting)
-  // they need to be cleaned up separately, and than concated
-  const data = stripIndent(optionData) + '\n' + stripIndent(cssWithPlaceholders)
-  const file = settings.babel && settings.babel.filename
+  const data =
+    stripIndent(optionData) + '\n' + stripIndent(cssWithPlaceholders)
 
+  // Map legacy sassOptions to modern API options
+  const { data: _, ...sassOptions } = settings.sassOptions || {}
   const preprocessed = sass
-    .renderSync(Object.assign({}, { file }, settings.sassOptions, { data }))
+    .compileString(data, {
+      ...sassOptions,
+      syntax: sassOptions.indentedSyntax ? 'indented' : 'scss'
+    })
     .css.toString()
 
   return preprocessed

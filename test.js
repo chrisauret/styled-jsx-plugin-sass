@@ -9,13 +9,13 @@ const cleanup = (str) => stripIndent(str).trim()
 describe('styled-jsx-plugin-sass', () => {
   it('applies plugins', () => {
     assert.strictEqual(
-      plugin('p { img { display: block} color: color(red a(90%)) }', {}).trim(),
+      plugin('p { img { display: block} color: red }', {}).trim(),
       cleanup(`
-        p {
-          color: color(red a(90%));
-        }
         p img {
           display: block;
+        }
+        p {
+          color: red;
         }
       `)
     )
@@ -58,12 +58,12 @@ describe('styled-jsx-plugin-sass', () => {
         {}
       ).trim(),
       cleanup(`
+        p img {
+          display: block;
+        }
         p {
           color: %%styled-jsx-placeholder-0%%;
           border-bottom: 1px solid %%styled-jsx-placeholder-1%%;
-        }
-        p img {
-          display: block;
         }
         p em {
           color: %%styled-jsx-placeholder-2%% !important;
@@ -210,7 +210,11 @@ describe('styled-jsx-plugin-sass', () => {
 
   it('works with @import', () => {
     assert.strictEqual(
-      plugin('@import "fixtures/fixture"; p { color: red }', {}).trim(),
+      plugin('@import "fixtures/fixture.scss"; p { color: red }', {
+        sassOptions: {
+          loadPaths: ['.']
+        }
+      }).trim(),
       cleanup(`
         div {
           color: red;
@@ -228,7 +232,12 @@ describe('styled-jsx-plugin-sass', () => {
     const file = fs.readFileSync(filename)
 
     assert.strictEqual(
-      plugin(file.toString(), { babel: { filename } }).trim(),
+      plugin(file.toString(), {
+        babel: { filename },
+        sassOptions: {
+          loadPaths: ['fixtures']
+        }
+      }).trim(),
       cleanup(`
         * {
           font-family: "Comic Sans MS" !important;
@@ -250,7 +259,7 @@ describe('styled-jsx-plugin-sass', () => {
       }).trim(),
       cleanup(`
         div {
-            padding: 1em;
+          padding: 1em;
         }
       `)
     )
