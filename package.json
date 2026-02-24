@@ -18,15 +18,15 @@
     "scss",
     "css-in-js"
   ],
-  "author": "Marton Lederer",
+  "author": "Chris Auret",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Thream/styled-jsx-plugin-sass.git"
+    "url": "git+https://github.com/chrisauret/styled-jsx-plugin-sass.git"
   },
   "bugs": {
-    "url": "https://github.com/Thream/styled-jsx-plugin-sass/issues"
+    "url": "https://github.com/chrisauret/styled-jsx-plugin-sass/issues"
   },
-  "homepage": "https://github.com/Thream/styled-jsx-plugin-sass#readme",
+  "homepage": "https://github.com/chrisauret/styled-jsx-plugin-sass#readme",
   "standard": {
     "envs": [
       "node",
@@ -43,7 +43,7 @@
     "lint:javascript": "standard",
     "release": "semantic-release",
     "test": "mocha test.js",
-    "postinstall": "husky install",
+    "_postinstall": "husky install",
     "prepublishOnly": "pinst --disable",
     "postpublish": "pinst --enable"
   },
